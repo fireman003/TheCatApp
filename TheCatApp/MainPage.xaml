@@ -4,25 +4,25 @@
              xmlns:local="clr-namespace:TheCatApp"
              x:Class="TheCatApp.MainPage">
 
-    <CollectionView ItemsSource="{Binding parsedResponse}" Margin="10">
+    <!--<CollectionView ItemsSource="{Binding parsedResponse}" Margin="10">
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="5">
                     <StackLayout Orientation="Vertical">
 
-                        <!-- Common Title -->
+                        --><!-- Common Title --><!--
                         <Label Text="{Binding name}" FontAttributes="Bold" FontSize="18" />
 
-                        <!-- Common Description -->
+                        --><!-- Common Description --><!--
                         <Label Text="{Binding origin}" FontSize="14" TextColor="Gray" />
 
-                        <!-- Optional: Display SourceType -->
+                        --><!-- Optional: Display SourceType --><!--
                         <Label Text="{Binding id}" FontSize="12" TextColor="LightGray" />
 
                     </StackLayout>
                 </Frame>
             </DataTemplate>
         </CollectionView.ItemTemplate>
-    </CollectionView>
+    </CollectionView>-->
 
 </ContentPage>

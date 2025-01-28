@@ -14,52 +14,73 @@ namespace TheCatApp
 
         public record struct getImageUrl(string id, string url, int height, int weight);
 
-
         public MainPage()
         {
+            bool reloadCatData = false;
+            bool isOnline = Connectivity.NetworkAccess == NetworkAccess.Internet;
+            string catLocalData = "catData.json";
             List<TheCatInfo> parsedResponse = new List<TheCatInfo>();
             List<string> images = new List<string>();
-            //get cat images from API
-            using (var client = new HttpClient())
+            if ((!File.Exists(catLocalData) && isOnline) || reloadCatData)
             {
-                var endpoint = new Uri("https://api.thecatapi.com/v1/breeds");
-                var result = client.GetAsync(endpoint).Result;
-                var json = result.Content.ReadAsStringAsync().Result;
-                //parse json
-                parsedResponse = JsonSerializer.Deserialize<List<TheCatInfo>>(json);
-            }
-
-            using (var client = new HttpClient())
-            {
-                //get image urls for cats
-                List<getImageUrl> ImageResponse = new List<getImageUrl>();
-                for (int i = 0; i < parsedResponse.Count; i++)
+                //get cat images from API
+                using (var client = new HttpClient())
                 {
-                    var endpoint = new Uri($"https://api.thecatapi.com/v1/images/search?breed_id={parsedResponse[i].id}");
+                    var endpoint = new Uri("https://api.thecatapi.com/v1/breeds");
                     var result = client.GetAsync(endpoint).Result;
                     var json = result.Content.ReadAsStringAsync().Result;
-                    if (json == "You have hit the rate limit, please increase your account package tier or wait a minute")
-                    {
-                        break;
-                    }
-                    ImageResponse = JsonSerializer.Deserialize<List<getImageUrl>>(json);
+                    //parse json
+                    parsedResponse = JsonSerializer.Deserialize<List<TheCatInfo>>(json);
+                    //save data to local file
+                    File.WriteAllText(catLocalData, json);
+                }
 
-                    //handle if image doesnt exists
-                    if (ImageResponse.Count != 0)
+                using (var client = new HttpClient())
+                {
+                    //get image urls for cats
+                    List<getImageUrl> ImageResponse = new List<getImageUrl>();
+                    for (int i = 0; i < parsedResponse.Count; i++)
                     {
-                        images.Add(ImageResponse[0].url.ToString());
-                    }
-                    else
-                    {
-                        images.Add("");
-                    }
+                        var endpoint = new Uri($"https://api.thecatapi.com/v1/images/search?breed_id={parsedResponse[i].id}");
+                        var result = client.GetAsync(endpoint).Result;
+                        var json = result.Content.ReadAsStringAsync().Result;
+                        if (json == "You have hit the rate limit, please increase your account package tier or wait a minute")
+                        {
+                            break;
+                        }
+                        ImageResponse = JsonSerializer.Deserialize<List<getImageUrl>>(json);
 
-                    ImageResponse.Clear();
+                        //handle if image doesnt exists
+                        if (ImageResponse.Count != 0)
+                        {
+                            images.Add(ImageResponse[0].url.ToString());
+                        }
+                        else
+                        {
+                            images.Add("https://www.shutterstock.com/shutterstock/photos/2059817444/display_1500/stock-vector-no-image-available-photo-coming-soon-illustration-vector-2059817444.jpg");
+                        }
+
+                        ImageResponse.Clear();
+                    }
                 }
             }
+            else if (File.Exists(catLocalData))
+            {
+                //get cat images from local file
+                string json = File.ReadAllText(catLocalData);
+                parsedResponse = JsonSerializer.Deserialize<List<TheCatInfo>>(json);
+                for (int i = 0; i < parsedResponse.Count; i++)
+                {
+                    images.Add(parsedResponse[i].reference_image_id);
+                }
+            }
+            else
+            {
+                //some error mostly no internet
+            }
 
-                //check if there smome error
-                if (parsedResponse.Count == 0 || parsedResponse == null)
+            //check if there smome error
+            if (parsedResponse.Count == 0 || parsedResponse == null)
                 {
                     Console.WriteLine("");
                 }
