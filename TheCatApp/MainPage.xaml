@@ -3,6 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TheCatApp"
              x:Class="TheCatApp.MainPage">
+    
+    <ContentPage.BindingContext>
+        <local:  />
+    </ContentPage.BindingContext>
+
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <CollectionView ItemsSource="{Binding }">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout Padding="10">
+                            <Image Source="{Binding ImageUrl}" HeightRequest="100" WidthRequest="100" Aspect="AspectFill"/>
+                            <Label Text="{Binding Name}" FontSize="16" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+
 
     <!--<CollectionView ItemsSource="{Binding parsedResponse}" Margin="10">
         <CollectionView.ItemTemplate>

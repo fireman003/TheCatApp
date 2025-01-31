@@ -1,19 +1,11 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
+using TheCatApp.Models;
 
 namespace TheCatApp
 {
     public partial class MainPage : ContentPage
     {
-        public record struct Weight(string imperial, string metric);
-        public record struct TheCatInfo(Weight weight, string id, string name, string cfa_url, string vetstreet_url,
-            string vcahospitals_url, string temperament, string origin, string country_codes, string country_code,
-            string description, string life_span, int indoor, int lap, string alt_names, int adaptability, int affection_level,
-            int child_friendly, int dog_friendly, int energy_level, int grooming, int health_issues, int intelligence, int shedding_level,
-            int social_needs, int stranger_friendly, int vocalisation, int experimental, int hairless, int natural, int rare, int rex,
-            int suppressed_tail, int short_legs, string wikipedia_url, int hypoallergenic, string reference_image_id);
-
-        public record struct getImageUrl(string id, string url, int height, int weight);
-
         public MainPage()
         {
             bool reloadCatData = false;
@@ -44,10 +36,6 @@ namespace TheCatApp
                         var endpoint = new Uri($"https://api.thecatapi.com/v1/images/search?breed_id={parsedResponse[i].id}");
                         var result = client.GetAsync(endpoint).Result;
                         var json = result.Content.ReadAsStringAsync().Result;
-                        if (json == "You have hit the rate limit, please increase your account package tier or wait a minute")
-                        {
-                            break;
-                        }
                         ImageResponse = JsonSerializer.Deserialize<List<getImageUrl>>(json);
 
                         //handle if image doesnt exists
@@ -77,15 +65,20 @@ namespace TheCatApp
             else
             {
                 //some error mostly no internet
+                Debug.WriteLine("No internet connection and no data is localy stored");
             }
 
             //check if there smome error
             if (parsedResponse.Count == 0 || parsedResponse == null)
-                {
-                    Console.WriteLine("");
-                }
+            {
+                Debug.WriteLine("Parsed data is empty");
+            }
 
-                InitializeComponent();
+            LinkedData linkedData = new LinkedData(images, parsedResponse);
+            
+
+            InitializeComponent();
+            BindingContext = linkedData;
         }
     }
 }
