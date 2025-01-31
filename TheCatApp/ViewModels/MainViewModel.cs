@@ -60,15 +60,7 @@ public class MainViewModel : BindableObject, INotifyPropertyChanged
         List<TheCatInfo> parsedResponse = new List<TheCatInfo>();
         List<string> images = new List<string>();
 
-            string dir = @"C:\ProgramData\CatInfo";
-            // If directory does not exist, create it
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-
-                //get cat images from API
+        //get cat images from API
             using (var client = new HttpClient())
             {
                 var endpoint = new Uri("https://api.thecatapi.com/v1/breeds");
