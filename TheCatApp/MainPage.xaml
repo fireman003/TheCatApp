@@ -2,20 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TheCatApp.Models"
+             xmlns:model="clr-namespace:TheCatApp.ViewModels"
              x:Class="TheCatApp.MainPage"
              x:Name="WeightPage"
              BindingContext="{x:Reference WeightPage}">
-
+    
+    <ContentPage.BindingContext>
+        <model:MainViewModel />
+    </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <ScrollView>
-            <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
-                <CollectionView x:Name="CatPreview" ItemsSource="{Binding linkedDatas}">
+            <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center"
+                                 HorizontalOptions="Center">
+                <CollectionView x:Name="CatPreview" ItemsSource="{Binding linkedDatas}" SelectionMode="Single">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid WidthRequest="300">
+                            <Grid WidthRequest="800">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="200"/>
                                     <ColumnDefinition Width="200"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -23,6 +29,7 @@
                                 </Grid.RowDefinitions>
                                 <Image Source="{Binding getImageUrl}" Grid.Row="0" Grid.Column="0"/>
                                 <Label Text="{Binding TheCatInfo.name}" FontSize="Medium" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                <Button Text="Details" Grid.Row="2" Grid.Column="2" Command="{Binding BindingContext.Detail, Source={x:Reference CatPreview}}" CommandParameter="{Binding TheCatInfo.name}"></Button>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

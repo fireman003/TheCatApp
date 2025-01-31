@@ -1,7 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Text.Json;
-using TheCatApp.Models;
+﻿using TheCatApp.ViewModels;
+
 
 namespace TheCatApp
 {
@@ -12,7 +10,5 @@ namespace TheCatApp
             InitializeComponent();
             BindingContext = new MainViewModel();
         }
-
-         
     }
 }
