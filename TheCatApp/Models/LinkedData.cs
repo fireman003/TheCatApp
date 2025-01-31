@@ -17,12 +17,12 @@ namespace TheCatApp.Models
     public record struct getImageUrl(string id, string url, int height, int weight);
 
 
-    internal class LinkedData : MainPage
+    public class LinkedData
     {
-        public List<string> getImageUrl { get; set; }
-        public List<TheCatInfo> TheCatInfo { get; set; }
+        public string getImageUrl { get; set; }
+        public TheCatInfo TheCatInfo { get; set; }
 
-        public LinkedData(List<string> getImageUrl, List<TheCatInfo> theCatInfo)
+        public LinkedData(string getImageUrl, TheCatInfo theCatInfo)
         {
             this.getImageUrl = getImageUrl;
             TheCatInfo = theCatInfo;

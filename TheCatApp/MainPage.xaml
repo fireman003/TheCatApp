@@ -1,50 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:TheCatApp"
-             x:Class="TheCatApp.MainPage">
-    
-    <ContentPage.BindingContext>
-        <local:  />
-    </ContentPage.BindingContext>
+             xmlns:local="clr-namespace:TheCatApp.Models"
+             x:Class="TheCatApp.MainPage"
+             x:Name="WeightPage"
+             BindingContext="{x:Reference WeightPage}">
 
 
-    <ScrollView>
-        <VerticalStackLayout>
-            <CollectionView ItemsSource="{Binding }">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <VerticalStackLayout Padding="10">
-                            <Image Source="{Binding ImageUrl}" HeightRequest="100" WidthRequest="100" Aspect="AspectFill"/>
-                            <Label Text="{Binding Name}" FontSize="16" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
+                <CollectionView x:Name="CatPreview" ItemsSource="{Binding linkedDatas}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid WidthRequest="300">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="400"/>
+                                </Grid.RowDefinitions>
+                                <Image Source="{Binding getImageUrl}" Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="{Binding TheCatInfo.name}" FontSize="Medium" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-
-
-    <!--<CollectionView ItemsSource="{Binding parsedResponse}" Margin="10">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="5">
-                    <StackLayout Orientation="Vertical">
-
-                        --><!-- Common Title --><!--
-                        <Label Text="{Binding name}" FontAttributes="Bold" FontSize="18" />
-
-                        --><!-- Common Description --><!--
-                        <Label Text="{Binding origin}" FontSize="14" TextColor="Gray" />
-
-                        --><!-- Optional: Display SourceType --><!--
-                        <Label Text="{Binding id}" FontSize="12" TextColor="LightGray" />
-
-                    </StackLayout>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>-->
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
 
 </ContentPage>
