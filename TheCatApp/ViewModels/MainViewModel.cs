@@ -63,9 +63,18 @@ namespace TheCatApp.ViewModels
             //get cat images from API
             using (var client = new HttpClient())
             {
-                var endpoint = new Uri("https://api.thecatapi.com/v1/breeds");
-                var result = client.GetAsync(endpoint).Result;
-                var json = result.Content.ReadAsStringAsync().Result;
+                string json;
+                try
+                {
+                    var endpoint = new Uri("https://api.thecatapi.com/v1/breeds");
+                    var result = client.GetAsync(endpoint).Result;
+                    json = result.Content.ReadAsStringAsync().Result;
+                } 
+                catch
+                {
+                    json = "";
+                    Debug.WriteLine("no internet access");
+                }
 
 
 
